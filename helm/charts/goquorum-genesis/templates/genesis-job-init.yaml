@@ -37,52 +37,46 @@ spec:
             - -c
           args:
             - |
+              #!/bin/bash
               echo "Creating config ..."
-              
+
               function safeWriteSecret {
-                key=$1
-                fpath=$2
-                kubectl create secret generic ${key}-keys --namespace {{ .Release.Namespace }} --from-file=nodekey=${fpath}/nodekey --from-file=nodekey.pub=${fpath}/nodekey.pub --from-file=enode=${fpath}/nodekey.pub --from-file=accountPrivate.key=${fpath}/accountPrivateKey --from-file=accountPassword=${fpath}/accountPassword --from-file=accountKeystore=${fpath}/accountKeystore --from-file=accountAdddress=${fpath}/accountAddress
+                local key=$1
+                local fpath=$2
+                kubectl create secret generic "${key}-keys" --namespace "{{ .Release.Namespace }}" \
+                  --from-file=nodekey="${fpath}/nodekey" \
+                  --from-file=nodekey.pub="${fpath}/nodekey.pub" \
+                  --from-file=enode="${fpath}/nodekey.pub" \
+                  --from-file=accountPrivate.key="${fpath}/accountPrivateKey" \
+                  --from-file=accountPassword="${fpath}/accountPassword" \
+                  --from-file=accountKeystore="${fpath}/accountKeystore" \
+                  --from-file=accountAddress="${fpath}/accountAddress"
               }
 
               function safeWriteGenesisConfigmap {
-                FOLDER_PATH=$1
-                kubectl get configmap --namespace {{ .Release.Namespace }} goquorum-genesis
-                if [ $? -ne 0 ]; then
-                  kubectl create configmap --namespace {{ .Release.Namespace }} goquorum-genesis --from-file=genesis.json=$FOLDER_PATH/goQuorum/genesis.json
+                local folder_path=$1
+                if ! kubectl get configmap --namespace "{{ .Release.Namespace }}" goquorum-genesis; then
+                  kubectl create configmap --namespace "{{ .Release.Namespace }}" goquorum-genesis \
+                    --from-file=genesis.json="${folder_path}/goQuorum/genesis.json"
                 fi
               }
 
               function safeWriteQuorumPeersConfigmap {
-                kubectl get configmap --namespace {{ .Release.Namespace }} goquorum-peers
-                if [ $? -ne 0 ]; then
-                  kubectl create configmap --namespace {{ .Release.Namespace }} goquorum-peers --from-file=static-nodes.json=/generated-config/static-nodes.json
+                if ! kubectl get configmap --namespace "{{ .Release.Namespace }}" goquorum-peers; then
+                  kubectl create configmap --namespace "{{ .Release.Namespace }}" goquorum-peers \
+                    --from-file=static-nodes.json="/generated-config/static-nodes.json"
                 fi
               }
 
-              # FOLDER_PATH=$(quorum-genesis-tool --consensus {{ .Values.rawGenesisConfig.genesis.config.algorithm.consensus }} {{ if .Values.rawGenesisConfig.blockchain.nodes.generate }} --validators {{ .Values.rawGenesisConfig.blockchain.nodes.count }} {{ else }} --validators 0 {{ end }} --members 0 --bootnodes 0 --chainID {{ .Values.rawGenesisConfig.genesis.config.chainId }} --blockperiod {{ .Values.rawGenesisConfig.genesis.config.algorithm.blockperiodseconds }} --emptyBlockPeriod {{ .Values.rawGenesisConfig.genesis.config.algorithm.emptyBlockPeriod }} --epochLength {{ .Values.rawGenesisConfig.genesis.config.algorithm.epochlength }} --requestTimeout {{ .Values.rawGenesisConfig.genesis.config.algorithm.requesttimeoutseconds }} --difficulty {{ .Values.rawGenesisConfig.genesis.difficulty }} --gasLimit {{ .Values.rawGenesisConfig.genesis.gasLimit }} --coinbase {{ .Values.rawGenesisConfig.genesis.coinbase }} {{ if .Values.rawGenesisConfig.blockchain.accountPassword }} --accountPassword {{ .Values.rawGenesisConfig.blockchain.accountPassword }} {{ end }} {{ if eq .Values.cluster.cloudNativeServices false }} --quickstartDevAccounts {{ .Values.rawGenesisConfig.genesis.includeQuickStartAccounts }} --alloc {{ if .Values.rawGenesisConfig.genesis.alloc }} '{{ .Values.rawGenesisConfig.genesis.alloc | toJson }}' {{ else }} '{}' {{ end }} --outputPath /generated-config | tail -1 | sed -e "s/^Artifacts in folder: //")
-              FOLDER_PATH: >
-                $(quorum-genesis-tool
-                  --consensus qbft
-                  --validators 4
-                  --members 0 
-                  --bootnodes 0
-                  --chainID 1337
-                  --blockperiod 10
-                  --emptyBlockPeriod 60
-                  --epochLength 30000
-                  --requestTimeout 30
-                  --difficulty 0x1
-                  --gasLimit 0x47b760
-                  --coinbase 0x0000000000000000000000000000000000000000
-                  --accountPassword password
-                  --quickstartDevAccounts false
-                  --alloc {}
-                  --outputPath /generated-config | tail -1 | sed -e "s/^Artifacts in folder: //")
+              # Generate the FOLDER_PATH using the quorum-genesis-tool
+              FOLDER_PATH=$(quorum-genesis-tool --consensus qbft --validators 4 --members 0 --bootnodes 0 --chainID 1337 \
+                --blockperiod 10 --emptyBlockPeriod 60 --epochLength 30000 --requestTimeout 30 --difficulty 0x1 \
+                --gasLimit 0x47b760 --coinbase 0x0000000000000000000000000000000000000000 --accountPassword password \
+                --quickstartDevAccounts false --alloc '{}' --outputPath /generated-config | tail -1 | sed -e "s/^Artifacts in folder: //")
 
-              echo $FOLDER_PATH
+              echo "$FOLDER_PATH"
               echo "Creating genesis configmap in k8s ..."
-              safeWriteGenesisConfigmap $FOLDER_PATH
+              safeWriteGenesisConfigmap "$FOLDER_PATH"
 
               # create the static-nodes with proper dns names for the quorum nodes  
               echo "[" > /generated-config/static-nodes.json
@@ -90,30 +84,30 @@ spec:
               # 0 index so setting this to the num of validators
               echo "Creating validator keys ..."
               i=1
-              for f in $(find $FOLDER_PATH -type d -iname "validator*" -exec basename {} \;); do
-                echo $f
+              for f in $(find "$FOLDER_PATH" -type d -iname "validator*" -exec basename {} \;); do
+                echo "$f"
 
-                if [ -d $FOLDER_PATH/${f} ]; then
-
+                if [ -d "${FOLDER_PATH}/${f}" ]; then
                   echo "Creating keys for $f ..."
 
                   echo "Using cloud native services"
-                  safeWriteSecret goquorum-node-validator-${i}-nodekey $FOLDER_PATH/${f}/nodekey
-                  safeWriteSecret goquorum-node-validator-${i}-nodekeypub $FOLDER_PATH/${f}/nodekey.pub 
-                  safeWriteSecret goquorum-node-validator-${i}-enode $FOLDER_PATH/${f}/nodekey.pub 
-                  safeWriteSecret goquorum-node-validator-${i}-address $FOLDER_PATH/${f}/address
-                  kubectl create configmap --namespace {{ .Release.Namespace }} goquorum-node-validator-${i}-address --from-file=address=$FOLDER_PATH/${f}/address
+                  safeWriteSecret "goquorum-node-validator-${i}-nodekey" "${FOLDER_PATH}/${f}/nodekey"
+                  safeWriteSecret "goquorum-node-validator-${i}-nodekeypub" "${FOLDER_PATH}/${f}/nodekey.pub"
+                  safeWriteSecret "goquorum-node-validator-${i}-enode" "${FOLDER_PATH}/${f}/nodekey.pub"
+                  safeWriteSecret "goquorum-node-validator-${i}-address" "${FOLDER_PATH}/${f}/address"
+                  kubectl create configmap --namespace "{{ .Release.Namespace }}" "goquorum-node-validator-${i}-address" \
+                    --from-file=address="${FOLDER_PATH}/${f}/address"
 
-                  safeWriteSecret goquorum-node-validator-${i}-accountPrivateKey $FOLDER_PATH/${f}/accountPrivateKey
-                  safeWriteSecret goquorum-node-validator-${i}-accountPassword $FOLDER_PATH/${f}/accountPassword
-                  safeWriteSecret goquorum-node-validator-${i}-accountKeystore $FOLDER_PATH/${f}/accountKeystore 
-                  safeWriteSecret goquorum-node-validator-${i}-accountAddress $FOLDER_PATH/${f}/accountAddress
+                  safeWriteSecret "goquorum-node-validator-${i}-accountPrivateKey" "${FOLDER_PATH}/${f}/accountPrivateKey"
+                  safeWriteSecret "goquorum-node-validator-${i}-accountPassword" "${FOLDER_PATH}/${f}/accountPassword"
+                  safeWriteSecret "goquorum-node-validator-${i}-accountKeystore" "${FOLDER_PATH}/${f}/accountKeystore"
+                  safeWriteSecret "goquorum-node-validator-${i}-accountAddress" "${FOLDER_PATH}/${f}/accountAddress"
 
                   # add to the static-nodes
-                  pubkey=$(cat $FOLDER_PATH/${f}/nodekey.pub )
-                  echo ",\"enode://$pubkey@goquorum-node-validator-$i-0.goquorum-node-validator-$i.{{ .Release.Namespace }}.svc.cluster.local:30303?discport=0\"" >> /generated-config/static-nodes.json
+                  pubkey=$(cat "${FOLDER_PATH}/${f}/nodekey.pub")
+                  echo ",\"enode://${pubkey}@goquorum-node-validator-$i-0.goquorum-node-validator-$i.{{ .Release.Namespace }}.svc.cluster.local:30303?discport=0\"" >> /generated-config/static-nodes.json
 
-                  i=$((i+1))
+                  i=$((i + 1))
                 fi
               done
 
