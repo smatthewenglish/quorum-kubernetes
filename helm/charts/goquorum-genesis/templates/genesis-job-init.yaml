@@ -68,6 +68,7 @@ spec:
                 fi
               }
 
+              # config map
               # Generate the FOLDER_PATH using the quorum-genesis-tool
               # FOLDER_PATH=$(quorum-genesis-tool --consensus qbft --validators 4 --members 0 --bootnodes 0 --chainID 1337 \
               #   --blockperiod 10 --emptyBlockPeriod 60 --epochLength 30000 --requestTimeout 30 --difficulty 0x1 \
