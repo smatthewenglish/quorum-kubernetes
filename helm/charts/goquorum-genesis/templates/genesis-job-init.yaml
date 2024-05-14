@@ -2,7 +2,7 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: {{ include "goquorum-genesis.name" . }}
+  name: {{ include "goquorum-genesis.name" . }}-init
   labels:
     app.kubernetes.io/name: goquorum-genesis-job
     app.kubernetes.io/component: genesis-job
@@ -24,7 +24,7 @@ spec:
         app.kubernetes.io/namespace: {{ .Release.Namespace }}
         app.kubernetes.io/managed-by: helm
     spec:
-      serviceAccountName: {{ include "goquorum-genesis.name" . }}
+      serviceAccountName: {{ include "goquorum-genesis.name" . }}-sa
       restartPolicy: "Never"
       containers:
         - name: generate-genesis
