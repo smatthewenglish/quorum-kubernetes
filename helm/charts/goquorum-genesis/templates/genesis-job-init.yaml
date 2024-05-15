@@ -50,47 +50,12 @@ spec:
           args:
             - |
               echo "Creating config ..."
-
-{{- if and (eq .Values.cluster.provider "azure") (.Values.cluster.cloudNativeServices) }}
-
-              function safeWriteSecret {
-                key=$1
-                fpath=$2
-                az keyvault secret show --vault-name {{ .Values.azure.keyvaultName }} --name $key > /dev/null 2>&1
-                if [ $? -ne 0 ]; then
-                  az keyvault secret set --vault-name {{ .Values.azure.keyvaultName }} --name $key --file $fpath --encoding utf-8
-                else
-                  # if the key exists pull it from keyvault so that when you update the enodes configmap, you have the right value
-                  az keyvault secret show --vault-name {{ .Values.azure.keyvaultName }} --name $key | jq -r '.value' > $fpath
-                fi
-              }
-
-              az login --federated-token "$(cat $AZURE_FEDERATED_TOKEN_FILE)" --service-principal -u $AZURE_CLIENT_ID -t $AZURE_TENANT_ID
-              az account set --subscription {{ .Values.azure.subscriptionId }}
-
-{{- else if and (eq .Values.cluster.provider "aws") (.Values.cluster.cloudNativeServices) }}
-
-              function safeWriteSecret {
-                key=$1
-                fpath=$2
-                aws secretsmanager describe-secret --secret-id $key > /dev/null 2>&1
-                if [ $? -ne 0 ]; then
-                  aws secretsmanager create-secret --name $key --description $key --secret-string file://$fpath
-                else
-                  # if the key exists pull it from keyvault so that when you update the enodes configmap, you have the right value
-                  aws secretsmanager get-secret-value --secret-id $key | jq -r '.SecretString' > $fpath
-                fi
-              }
-
-{{- else }}
               
               function safeWriteSecret {
                 key=$1
                 fpath=$2
                 kubectl create secret generic ${key}-keys --namespace {{ .Release.Namespace }} --from-file=nodekey=${fpath}/nodekey --from-file=nodekey.pub=${fpath}/nodekey.pub --from-file=enode=${fpath}/nodekey.pub --from-file=accountPrivate.key=${fpath}/accountPrivateKey --from-file=accountPassword=${fpath}/accountPassword --from-file=accountKeystore=${fpath}/accountKeystore --from-file=accountAdddress=${fpath}/accountAddress
               }
-
-{{- end }}
 
               function safeWriteGenesisConfigmap {
                 FOLDER_PATH=$1
@@ -126,8 +91,6 @@ spec:
 
                   echo "Creating keys for $f ..."
 
-{{- if and (ne .Values.cluster.provider "local") (.Values.cluster.cloudNativeServices) }}
-
                   echo "Using cloud native services"
                   safeWriteSecret goquorum-node-validator-${i}-nodekey $FOLDER_PATH/${f}/nodekey
                   safeWriteSecret goquorum-node-validator-${i}-nodekeypub $FOLDER_PATH/${f}/nodekey.pub 
@@ -139,14 +102,6 @@ spec:
                   safeWriteSecret goquorum-node-validator-${i}-accountPassword $FOLDER_PATH/${f}/accountPassword
                   safeWriteSecret goquorum-node-validator-${i}-accountKeystore $FOLDER_PATH/${f}/accountKeystore 
                   safeWriteSecret goquorum-node-validator-${i}-accountAddress $FOLDER_PATH/${f}/accountAddress 
-                  
-{{- else }}
-
-                  echo "Using k8s secrets"
-                  safeWriteSecret goquorum-node-validator-${i} "$FOLDER_PATH/${f}"
-                  kubectl create configmap --namespace {{ .Release.Namespace }} goquorum-node-validator-${i}-address --from-file=address=$FOLDER_PATH/${f}/address
-
-{{- end }}
 
                   # add to the static-nodes
                   pubkey=$(cat $FOLDER_PATH/${f}/nodekey.pub )
