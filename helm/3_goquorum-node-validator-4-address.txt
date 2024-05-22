@@ -1,0 +1,10 @@
+apiVersion: v1
+data:
+  address: 620dded0c7861c99e4ff1e5f6b9bdd3ab0c55ea4
+kind: ConfigMap
+metadata:
+  creationTimestamp: "2024-05-16T19:13:04Z"
+  name: goquorum-node-validator-4-address
+  namespace: test
+  resourceVersion: "93331891"
+  uid: a6f2da41-1747-4710-ba8d-6cb89a59ab6f

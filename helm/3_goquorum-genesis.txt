@@ -1,0 +1,68 @@
+apiVersion: v1
+data:
+  genesis.json: |-
+    {
+      "nonce": "0x0",
+      "timestamp": "0x58ee40ba",
+      "extraData": "0xf87aa00000000000000000000000000000000000000000000000000000000000000000f85494ccaae5e6f18d5bfa9469662d896bfe30c26396ae94e60971dcb91f3b22d6e09bbaa0f84282b0057c1b9482f5ae2f74404daad38849602830fe97d0559a5294620dded0c7861c99e4ff1e5f6b9bdd3ab0c55ea4c080c0",
+      "gasLimit": "0x47b760",
+      "gasUsed": "0x0",
+      "number": "0x0",
+      "difficulty": "0x1",
+      "coinbase": "0x0000000000000000000000000000000000000000",
+      "mixHash": "0x63746963616c2062797a616e74696e65206661756c7420746f6c6572616e6365",
+      "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
+      "config": {
+        "chainId": 1337,
+        "homesteadBlock": 0,
+        "eip150Block": 0,
+        "eip150Hash": "0x0000000000000000000000000000000000000000000000000000000000000000",
+        "eip155Block": 0,
+        "eip158Block": 0,
+        "byzantiumBlock": 0,
+        "constantinopleBlock": 0,
+        "petersburgBlock": 0,
+        "istanbulBlock": 0,
+        "muirglacierblock": 0,
+        "berlinBlock": 0,
+        "londonBlock": 0,
+        "isQuorum": true,
+        "maxCodeSizeConfig": [
+          {
+            "block": 0,
+            "size": 64
+          }
+        ],
+        "txnSizeLimit": 64,
+        "qbft": {
+          "policy": 0,
+          "epoch": 30000,
+          "ceil2Nby3Block": 0,
+          "testQBFTBlock": 0,
+          "blockperiodseconds": 10,
+          "emptyblockperiodseconds": 60,
+          "requesttimeoutseconds": 20
+        }
+      },
+      "alloc": {
+        "0x4df0e41faab56256dca2e3c169b80f90a95d1932": {
+          "balance": "1000000000000000000000000000"
+        },
+        "0x342d5f053a03381bc1bbf1d765c3a37b56dc0453": {
+          "balance": "1000000000000000000000000000"
+        },
+        "0xa3ff3d7cb2b235f83aa667c1c6fb1aa4af724d26": {
+          "balance": "1000000000000000000000000000"
+        },
+        "0x506eaceb1907ce55098c3fcbfbe6f761e9433e27": {
+          "balance": "1000000000000000000000000000"
+        }
+      }
+    }
+kind: ConfigMap
+metadata:
+  creationTimestamp: "2024-05-16T19:13:02Z"
+  name: goquorum-genesis
+  namespace: test
+  resourceVersion: "93331882"
+  uid: 03f77fb4-c682-41f1-bca4-53526e30b07f

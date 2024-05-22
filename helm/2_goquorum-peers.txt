@@ -1,0 +1,18 @@
+apiVersion: v1
+data:
+  static-nodes.json: |
+    [
+      "enode://40e23d27dfa66bc69ab6c373198137fbe2cba40ba6303435504af2794a738693153de4d85c61e664328d49a8de33b0e1284474fea63bdede5c9ba7153a36d99a@goquorum-node-validator-1-0.goquorum-node-validator-1.test.svc.cluster.local:30303?discport=0",
+      "enode://55e07cad9b9de9dbcbd94883b4b948c830f547d0b4d4c701f637dfe41a7a480cab7e55572a3a7d1ed074e351c209ea7e7e31c7d330a46b56cf929d8d774a08cb@goquorum-node-validator-2-0.goquorum-node-validator-2.test.svc.cluster.local:30303?discport=0",
+      "enode://72e6aa355bd37a1e10a7a15c01ee760a5ccf3db83c665bbe299c3a4bcbde0a2656bce63f679168acfe87c487523f6955a734b07363409c7339d70f558b03bbf3@goquorum-node-validator-4-0.goquorum-node-validator-4.test.svc.cluster.local:30303?discport=0",
+      "enode://7d8bb0075fcd11425dbdf8d997bafc081d88f4b422fa83f454c5d4f098637a9a6360132b23677bf8a553acf071b7c74d7ee19e10727f71196ca30283044c73d2@goquorum-node-validator-3-0.goquorum-node-validator-3.test.svc.cluster.local:30303?discport=0",
+      "enode://b8ea8700d90a77790345cf36746c2f003cee1609e3da46f66fafd82f1f923ab37585cff28e73f95bde8b9cdd1815ec2247cc2508db7c24177e56b7cefe9906fa@goquorum-node-validator-2-0.goquorum-node-validator-2.test.svc.cluster.local:30303?discport=0",
+      "enode://bb94fda58f6103ad4bf7a114d85ce6e5391038c15bda6ff4a60093e72af1238782b08511323281d46e2463bb1ba9ea87291483e176d3752c4f5326a323e39362@goquorum-node-validator-1-0.goquorum-node-validator-1.test.svc.cluster.local:30303?discport=0"
+    ]
+kind: ConfigMap
+metadata:
+  creationTimestamp: "2024-05-16T19:13:04Z"
+  name: goquorum-peers
+  namespace: test
+  resourceVersion: "93335772"
+  uid: cbe94d50-e4e9-4c38-b245-923b938bd050
