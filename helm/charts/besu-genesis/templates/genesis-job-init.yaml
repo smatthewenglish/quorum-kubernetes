@@ -115,7 +115,7 @@ spec:
                 --members 0 \
                 --bootnodes 0 \
                 --chainID {{ .Values.rawGenesisConfig.genesis.config.chainId }} \
-                --blockperiodseconds 1 \
+                --blockperiod 1 \
                 --epochLength {{ .Values.rawGenesisConfig.genesis.config.algorithm.epochlength }} \
                 --requestTimeout {{ .Values.rawGenesisConfig.genesis.config.algorithm.requesttimeoutseconds }} \
                 --difficulty {{ .Values.rawGenesisConfig.genesis.difficulty }} \
