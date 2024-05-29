@@ -59,7 +59,7 @@ node:
       verbosity: 5
     miner:
       threads: 1
-      blockPeriod: 5
+      blockPeriod: 1 #5
     p2p:
       enabled: true
       addr: "0.0.0.0"
@@ -120,5 +120,5 @@ image:
     tag: 22.1.7
   hooks:
     repository: consensys/quorum-k8s-hooks
-    tag: qgt-0.2.15
+    tag: qgt-0.2.12
     pullPolicy: IfNotPresent

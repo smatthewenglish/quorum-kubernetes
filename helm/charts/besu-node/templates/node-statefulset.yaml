@@ -272,11 +272,11 @@ spec:
           - -c
         args:
           - |
-            exec
-            /opt/besu/bin/besu \
+            rm -rf /data/besu/* && \
+            exec /opt/besu/bin/besu \
               --config-file=/etc/besu/config.toml \
               --Xdns-enabled=true --Xdns-update-enabled=true --Xnat-kube-service-name={{ include "besu-node.fullname" . }} \
-              --min-gas-price=0 
+              --min-gas-price=0
 
         livenessProbe:
           httpGet:

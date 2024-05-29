@@ -31,10 +31,10 @@ rawGenesisConfig:
       chainId: 1337
       algorithm:
         consensus: qbft
-        blockperiodseconds: 10
+        blockperiodseconds: 1 #update 10 to 1
         epochlength: 30000
         requesttimeoutseconds: 20
-    gasLimit: '0xf7b760' 
+    gasLimit: '0x29b92700' ###sme
     difficulty: '0x1'
     coinbase: '0x0000000000000000000000000000000000000000'
   blockchain:
@@ -46,5 +46,5 @@ rawGenesisConfig:
 
 image:
   repository: consensys/quorum-k8s-hooks
-  tag: qgt-0.2.15
+  tag: qgt-0.2.12
   pullPolicy: IfNotPresent

@@ -30,10 +30,10 @@ rawGenesisConfig:
       chainId: 1337
       algorithm:
         consensus: qbft # choose from: ibft2 | qbft | clique
-        blockperiodseconds: 5
+        blockperiodseconds: 1 #tf...
         epochlength: 30000
         requesttimeoutseconds: 20
-    gasLimit: '0x47b760'
+    gasLimit: '0x29b92700' #the other one didn't seem to have an effect...
     difficulty: '0x1'
     coinbase: '0x0000000000000000000000000000000000000000'
     includeQuickStartAccounts: false # set to true if you would like to use the quorum-dev-quickstart test accounts. This setting will be forced false if cloudNativeServices is set to true which is assuming a prod environment
