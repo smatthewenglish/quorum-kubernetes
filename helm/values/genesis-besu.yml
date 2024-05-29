@@ -32,7 +32,7 @@ rawGenesisConfig:
         consensus: qbft # choose from: ibft2 | qbft | clique
         blockperiodseconds: 1 #tf...
         epochlength: 30000
-        requesttimeoutseconds: 20
+        requesttimeoutseconds: 2
     gasLimit: '0x29b92700' #the other one didn't seem to have an effect...
     difficulty: '0x1'
     coinbase: '0x0000000000000000000000000000000000000000'

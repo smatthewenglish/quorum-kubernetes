@@ -33,7 +33,7 @@ rawGenesisConfig:
         consensus: qbft
         blockperiodseconds: 1 #update 10 to 1
         epochlength: 30000
-        requesttimeoutseconds: 20
+        requesttimeoutseconds: 2 #and requesttimeoutseconds to two times blockperiodseconds
     gasLimit: '0x29b92700' ###sme
     difficulty: '0x1'
     coinbase: '0x0000000000000000000000000000000000000000'
