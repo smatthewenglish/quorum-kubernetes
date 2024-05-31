@@ -2,7 +2,7 @@
 image:
   blockscout:
     repository: consensys/blockscout
-    tag: v4.0.0-beta
+    tag: e3d5778
     pullPolicy: IfNotPresent
 
 postgresql:
@@ -29,5 +29,5 @@ blockscout: # cpu dependent
   coin: eth
   ethereum_jsonrpc_variant: geth
   ethereum_jsonrpc_transport: http
-  ethereum_jsonrpc_endpoint: "goquorum-node-member-1" # service name to be used
+  ethereum_jsonrpc_endpoint: "goquorum-node-validator-1" # service name to be used
   secret_key_base: "VTIB3uHDNbvrY0+60ZWgUoUBKDn9ppLR8MI4CpRz4/qLyEFs54ktJfaNT6Z221" # change me please

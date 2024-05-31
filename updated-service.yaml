@@ -1,0 +1,35 @@
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    meta.helm.sh/release-name: blockscout
+    meta.helm.sh/release-namespace: eval-q-01
+  creationTimestamp: "2024-05-31T00:56:48Z"
+  labels:
+    app.kubernetes.io/component: service
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: blockscout
+    app.kubernetes.io/namespace: eval-q-01
+    app.kubernetes.io/part-of: blockscout
+    app.kubernetes.io/release: blockscout
+  name: blockscout
+  namespace: eval-q-01
+spec:
+  clusterIP: 10.98.56.179
+  clusterIPs:
+  - 10.98.56.179
+  internalTrafficPolicy: Cluster
+  ipFamilies:
+  - IPv4
+  ipFamilyPolicy: SingleStack
+  ports:
+  - name: http
+    port: 4000
+    protocol: TCP
+    targetPort: http
+  selector:
+    app: blockscout
+  sessionAffinity: None
+  type: ClusterIP
+status:
+  loadBalancer: {}
