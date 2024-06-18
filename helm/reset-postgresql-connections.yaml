@@ -1,0 +1,17 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: reset-postgresql-connections
+  namespace: eval-q-09
+spec:
+  template:
+    spec:
+      containers:
+      - name: reset-connections
+        image: postgres:latest
+        env:
+        - name: PGPASSWORD
+          value: "BDIMxWj7nH"  # Replace with the correct password if needed
+        command: ["psql"]
+        args: ["-U", "postgres", "-h", "my-postgresql.eval-q-09.svc.cluster.local", "-p", "5432", "-d", "postgres", "-c", "ALTER SYSTEM SET max_connections = 100; SELECT pg_reload_conf();"]
+      restartPolicy: OnFailure

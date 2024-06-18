@@ -261,6 +261,10 @@ spec:
             echo 'transaction manager is up';
           {{- end }}
 
+            # Remove existing data directory and its contents
+            rm -rf {{ .Values.node.goquorum.dataPath }}
+            mkdir {{ .Values.node.goquorum.dataPath }}
+
             geth --datadir={{ .Values.node.goquorum.dataPath }} init {{ .Values.node.goquorum.genesisFilePath }}
             cp {{ .Values.node.goquorum.keysPath }}/nodekey {{ .Values.node.goquorum.dataPath }}/geth/nodekey
             cp /config/static/static-nodes.json {{ .Values.node.goquorum.dataPath }}/geth/static-nodes.json
@@ -274,6 +278,7 @@ spec:
             --verbosity {{ .Values.node.goquorum.log.verbosity }} \
             --istanbul.blockperiod 1 --mine --miner.threads 1 --miner.gasprice 0 --emitcheckpoints \
             --syncmode full --nousb \
+            --gcmode archive \
             --metrics --pprof --pprof.addr {{ .Values.node.goquorum.metrics.pprofaddr | quote }} --pprof.port {{ .Values.node.goquorum.metrics.pprofport }} \
             --networkid {{ .Values.node.goquorum.networkId }} \
             --port {{ .Values.node.goquorum.p2p.port }} \

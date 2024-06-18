@@ -3,21 +3,24 @@ kind: Service
 metadata:
   annotations:
     meta.helm.sh/release-name: blockscout
-    meta.helm.sh/release-namespace: eval-q-00
-  creationTimestamp: "2024-05-31T00:56:48Z"
+    meta.helm.sh/release-namespace: eval-b
+  creationTimestamp: "2024-06-03T13:56:11Z"
   labels:
+    app: blockscout
     app.kubernetes.io/component: service
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: blockscout
-    app.kubernetes.io/namespace: eval-q-00
+    app.kubernetes.io/namespace: eval-b
     app.kubernetes.io/part-of: blockscout
     app.kubernetes.io/release: blockscout
   name: blockscout
-  namespace: eval-q-00
+  namespace: eval-b
+  resourceVersion: "102450505"
+  uid: 812647f3-4032-4fab-8463-1fc25e9bf585
 spec:
-  clusterIP: 10.98.56.179
+  clusterIP: 172.20.180.205
   clusterIPs:
-  - 10.98.56.179
+  - 172.20.180.205
   internalTrafficPolicy: Cluster
   ipFamilies:
   - IPv4

@@ -4,7 +4,7 @@ apiVersion: networking.k8s.io/v1
 kind: IngressClass
 metadata:
   name: network-nginx
-  namespace: eval-q-01
+  namespace: eval-q-00
 spec:
   controller: k8s.io/network-ingress-nginx
 
@@ -13,7 +13,7 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: goquorum-ingress-routes
-  namespace: eval-q-01
+  namespace: eval-q-00
   annotations:
     nginx.ingress.kubernetes.io/ssl-redirect: "false"
     nginx.ingress.kubernetes.io/use-regex: "true"

@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: blockscout
+  namespace: eval-q-10
+spec:
+  selector:
+    app: blockscout-manual
+  ports:
+    - protocol: TCP
+      port: 4000
+      targetPort: 4000

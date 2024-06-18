@@ -1,0 +1,79 @@
+
+
+export DATABASE_URL=postgres://blockscout_db_app:CD##ijpaCGIMQGg+hH55Zrb90QP=@onyx-incubator-cluster.cluster-ctbia7mjrscz.us-east-1.rds.amazonaws.com:5432/blockscout_db
+
+
+
+
+
+
+
+
+
+export DATABASE_URL=postgres://
+
+export SECRET_KEY_BASE=x4nl7wD1AFzfN5iAg9CQbbwjMNqxfHPHod9JHlSjHi2k0PZH2hVxlP+DnFMuSdGY
+
+
+    #DATABASE_URL: "postgres://blockscout_db_app:CD%23%23ijpaCGIMQGg%2BhH55Zrb90QP%3D@onyx-incubator-cluster.cluster-ctbia7mjrscz.us-east-1.rds.amazonaws.com:5432/blockscout_db"
+    #value: "postgres://blockscout_db_app:CD##ijpaCGIMQGg+hH55Zrb90QP=@onyx-incubator-cluster.cluster-ctbia7mjrscz.us-east-1.rds.amazonaws.com:5432/blockscout_db?ssl=false"
+    #export ETHEREUM_JSONRPC_VARIANT=geth
+    ETHEREUM_JSONRPC_VARIANT: geth
+    NEXT_PUBLIC_APP_HOST: "http://localhost:8080"
+    #export ETHEREUM_JSONRPC_HTTP_URL=http://localhost:8545
+    
+    DISABLE_EXCHANGE_RATES: "true"
+    ETHEREUM_JSONRPC_TRACE_URL: http://goquorum-node-validator-4:8545
+    ETHEREUM_JSONRPC_WS_URL: ws://goquorum-node-validator-4:8546
+    PORT: "4000"
+    POSTGRES_PASSWORD: "CD##ijpaCGIMQGg+hH55Zrb90QP="
+    POSTGRES_USER: "blockscout_db_app"
+    NETWORK: "quorum"
+    SUBNETWORK: "test"
+    CHAIN_ID: "1337"
+    COIN: "eth"
+
+export DISABLE_EXCHANGE_RATES=true
+
+
+ETHEREUM_JSONRPC_HTTP_URL: 
+
+export ETHEREUM_JSONRPC_HTTP_URL=http://goquorum-node-validator-4:8545
+export ETHEREUM_JSONRPC_HTTP_URL=http://localhost:8545
+
+export PORT=4000
+export API_V2_ENABLED=true
+
+export COIN=ether
+export COIN_NAME=eth
+export DISPLAY_TOKEN_ICONS=false
+
+
+export CHAIN_ID=1337
+
+export ETHEREUM_JSONRPC_TRACE_URL=http://goquorum-node-validator-4:8545
+
+export ETHEREUM_JSONRPC_VARIANT=geth
+
+
+export DATABASE_URL=postgres://postgres:u78REleu19@my-postgresql.eval-q-10.svc.cluster.local:5432/postgres
+
+
+export NEXT_PUBLIC_APP_HOST=http://localhost:8080
+
+
+export DATABASE_URL=postgres://postgres:u78REleu19@my-postgresql.eval-q-10.svc.cluster.local:5432/postgres
+
+
+export DATABASE_URL=postgres://postgres:u78REleu19@my-postgresql.eval-q-10.svc.cluster.local:5432/postgres && \
+export ETHEREUM_JSONRPC_HTTP_URL=http://goquorum-node-validator-4:8545 && \
+export NEXT_PUBLIC_APP_HOST=http://localhost:8080 && \
+export PORT=4000 && \
+export API_V2_ENABLED=true && \
+export CHAIN_ID=1337 && \
+export ETHEREUM_JSONRPC_TRACE_URL=http://goquorum-node-validator-4:8545 && \
+export ETHEREUM_JSONRPC_VARIANT=geth && \
+export COIN=ether && \
+export COIN_NAME=eth && \
+export DISPLAY_TOKEN_ICONS=false && \
+export DISABLE_EXCHANGE_RATES=true 
